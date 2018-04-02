@@ -1,5 +1,5 @@
 /*
- * Final code with integrated Ultrasonic sensor with relay
+ * Final code with integrated Ultrasonic sensor and relay
  */
 
 // Pin declaration for HC-SR04
@@ -21,7 +21,7 @@ void setup() {
   
   //Pin setup for the relay
   pinMode(relay1InputPin, OUTPUT);
-  pinMode(relay1VccPin, OUTPUT);
+  pinMode(relay1VccPin, OUTPUT);  // Due to unavailability of a second Vcc pin on the board
   digitalWrite(relay1VccPin, HIGH);
 }
 
@@ -34,13 +34,25 @@ void loop() {
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
   // Reads the echo Pin, returns the sound wave travel time in microseconds
-  duration = pulseIn(echoPin, HIGH);
-  // Calculating the distance
+  duration = pulseIn(echoPin, HIGH); // In microseconds
+  // Calculating the distance (in cms)
   distance= duration*0.034/2;
 
+  // Testing code - to be removed
+  // Calculating the distance
+  distance= duration*0.034/2;
+  // Prints the distance on the Serial Monitor
+  Serial.print("Distance: ");
+  Serial.println(duration);
+  // Testing code ends
+
   // Condition to activate the relay
-  if( distance<10 )
+  if( distance<20 ){
+    delay(5000);
     digitalWrite(relay1InputPin, HIGH);
-  else
+  }
+  else {
+    delay(5000);
     digitalWrite(relay1InputPin, LOW);
+  }
 }
